@@ -15,7 +15,8 @@ from skfem import (
 from skfem.helpers import curl, dot, grad, inner
 from tqdm import tqdm
 
-from femwell.mode_solver import solver_slepc
+#from femwell.mode_solver import solver_slepc
+from femwell.solver import solver_eigen_slepc
 
 
 def compute_modes(basis_epsilon_r, epsilon_r, mu_r, num_modes, phase_x):
@@ -71,7 +72,8 @@ def compute_modes(basis_epsilon_r, epsilon_r, mu_r, num_modes, phase_x):
 
     lams, xs = solve(
         *condense(A + D1, B, D=basis.get_dofs(["top", "bottom"]), x=basis.zeros(dtype=complex)),
-        solver=solver_slepc(k=num_modes, which="LR", sigma=10),
+        #solver=solver_slepc(k=num_modes, which="LR", sigma=10),   #solver_eigen_slepc
+        solver=solver_eigen_slepc(k=num_modes, which="LR", sigma=10),
     )
 
     return np.sqrt(lams), basis, xs

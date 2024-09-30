@@ -53,13 +53,13 @@ polygons = OrderedDict(
 resolutions = dict(core={"resolution": 0.03, "distance": 0.5})
 
 mesh = from_meshio(mesh_from_OrderedDict(polygons, resolutions, default_resolution_max=10))
-mesh.draw().show()
+#mesh.draw().show() # mesh picture
 
 # %% [markdown]
 # Let's also plot the domains
 
 # %%
-plot_domains(mesh)
+#plot_domains(mesh) # plot different section
 plt.show()
 
 # %% [markdown]
@@ -70,7 +70,8 @@ basis0 = Basis(mesh, ElementTriP0())
 epsilon = basis0.zeros()
 for subdomain, n in {"core": 1.9963, "box": 1.444, "clad": 1}.items():
     epsilon[basis0.get_dofs(elements=subdomain)] = n**2
-basis0.plot(epsilon, colorbar=True).show()
+# plot relative permittivity
+basis0.plot(epsilon, colorbar=True).show() # The refractive index of electromagnetic radiation equals εr*μr=n**2, where εr is the material's relative permittivity, and μr is its relative permeability
 
 # %% [markdown]
 # And now we call `compute_modes` to calculate the modes of the waveguide we set up.
@@ -80,7 +81,7 @@ basis0.plot(epsilon, colorbar=True).show()
 # %%
 wavelength = 1.55
 
-modes = compute_modes(basis0, epsilon, wavelength=wavelength, num_modes=2, order=2)
+modes = compute_modes(basis0, epsilon, wavelength=wavelength, num_modes=4, order=2)
 for mode in modes:
     print(f"Effective refractive index: {mode.n_eff:.4f}")
     mode.show("E", part="real", colorbar=True)
@@ -108,5 +109,5 @@ confinement_factors_waveguide = []
 for mode in modes:
     powers_in_waveguide.append(mode.calculate_power(elements="core"))
     confinement_factors_waveguide.append(mode.calculate_confinement_factor(elements="core"))
-print(powers_in_waveguide)
-print(confinement_factors_waveguide)
+print(f'powers in waveguide is: {powers_in_waveguide}')
+print(f'confinement factors for each mode: {confinement_factors_waveguide}')

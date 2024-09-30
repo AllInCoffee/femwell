@@ -7,6 +7,8 @@ from skfem.helpers import dot
 
 from femwell.thermal import solve_thermal
 
+
+
 """
 implemented like in https://www-users.cse.umn.edu/~arnold/8445.f11/notes.pdf page 81 in the middle of the page
 """
@@ -237,8 +239,9 @@ if __name__ == "__main__":
     # Calculate modes
 
     from tqdm.auto import tqdm
-
-    from femwell.mode_solver import (
+    
+    #from femwell.mode_solver import (    #wrong
+    from femwell.mode_solver_inplane import (
         calculate_coupling_coefficient,
         compute_modes,
         plot_mode,
